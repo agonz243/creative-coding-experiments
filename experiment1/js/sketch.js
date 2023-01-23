@@ -15,6 +15,10 @@ class Wavellipse {
     this.w_start = w
 
     this.locked = true
+
+    this.r = 50
+    this.g = 50
+    this.b = 50
   }
   
   draw() {
@@ -51,6 +55,7 @@ let wavyEllipse = new Wavellipse(50, 100)
 
 // Draw stuff continuously
 function draw() {
+  stroke(wavyEllipse.r, wavyEllipse.g, wavyEllipse.b)
   wavyEllipse.draw()
   
   // If down is pressed, squash and stretch

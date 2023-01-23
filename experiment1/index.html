@@ -23,6 +23,15 @@
 	<script type="text/javascript" src="./js/project.js" DEFER></script>
 	<!-- Use me for a p5.js project -->
 	<script type="text/javascript" src="./js/sketch.js" DEFER></script>
+
+	<!-- A short lil script that prevents arrow keys from moving the webpage during interaction with canvas-->
+	<script>
+        window.addEventListener("keydown", function(e) {
+            if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1){
+                e.preventDefault();
+            }
+        }, false);
+	</script>
 </head>
 <body>
 	<!-- Style this page by changing the CSS in ../css/site.css or css/experiment.css -->
