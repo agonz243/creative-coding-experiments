@@ -1,67 +1,88 @@
-// sketch.js - purpose and description here
-// Author: Your Name
-// Date:
-
-// Here is how you might set up an OOP p5.js project
-// Note that p5.js looks for a file called sketch.js
-
-// Constants - User-servicable parts
-// In a longer project I like to put these in a separate file
-const VALUE1 = 1;
-const VALUE2 = 2;
-
-// Globals
-let myInstance;
-let canvasContainer;
-
-class MyClass {
-    constructor(param1, param2) {
-        this.property1 = param1;
-        this.property2 = param2;
-    }
-
-    myMethod() {
-        // code to run when method is called
-    }
-}
-
-// setup() function is called once when the program starts
+// Setup
 function setup() {
-    // place our canvas, making it fit our container
-    canvasContainer = $("#canvas-container");
-    let canvas = createCanvas(canvasContainer.width(), canvasContainer.height());
-    canvas.parent("canvas-container");
-    // resize canvas is the page is resized
-    $(window).resize(function() {
-        console.log("Resizing...");
-        resizeCanvas(canvasContainer.width(), canvasContainer.height());
-    });
-    // create an instance of the class
-    myInstance = new MyClass(VALUE1, VALUE2);
-
-    var centerHorz = windowWidth / 2;
-    var centerVert = windowHeight / 2;
+  createCanvas(800,800);
+  background(0);
 }
 
-// draw() function is called repeatedly, it's the main animation loop
+// Define Ellipse class
+class Wavellipse {
+
+  constructor(w, h) {
+    this.h = h
+    this.w = w
+    
+    this.h_start = h
+    this.w_start = w
+
+    this.locked = true
+  }
+  
+  draw() {
+    if (this.locked) {
+      ellipse(height / 2, width / 2, this.w, this.h)
+    } else {
+      ellipse(mouseX, mouseY, this.w, this.h)
+    }
+    
+  } 
+  
+  // The ellipse remembers the shape of its soul
+  homeostasis() {
+    
+    // Revert to original shape over time
+    if (wavyEllipse.h < wavyEllipse.h_start) {
+      wavyEllipse.h += 2
+    } 
+    
+    if (wavyEllipse.w > wavyEllipse.w_start) {
+      wavyEllipse.w -= 2
+    }
+    
+    if (wavyEllipse.h > wavyEllipse.h_start) {
+      wavyEllipse.h -= 2
+    }
+  }
+
+}
+
+// Instantiate ellipse object
+let wavyEllipse = new Wavellipse(50, 100)
+
+
+// Draw stuff continuously
 function draw() {
-    background(220);    
-    // call a method on the instance
-    myInstance.myMethod();
-
-    // Put drawings here
-    var centerHorz = canvasContainer.width() / 2 - 125;
-    var centerVert = canvasContainer.height() / 2 - 125;
-    fill(234, 31, 81);
-    noStroke();
-    rect(centerHorz, centerVert, 250, 250);
-    fill(255);
-    textStyle(BOLD);
-    textSize(140);
-    text("p5*", centerHorz + 10, centerVert + 200);
+  wavyEllipse.draw()
+  
+  // If down is pressed, squash and stretch
+  if (keyIsDown(40)) {
+    wavyEllipse.h -= 1
+    wavyEllipse.w += 1
+    
+  }
+  
+  // If Up is pressed, stretch vertically
+  if (keyIsDown(38)) {
+    wavyEllipse.h += 1
+    wavyEllipse.w += 0.5
+  }
+  
+  
+  if (!keyIsPressed) {
+    wavyEllipse.homeostasis()
+  }
 }
 
-// mousePressed() function is called once after every time a mouse button is pressed
-function mousePressed() {
-    // code to run when mouse is pressed
+
+// Check for single key presses
+function keyPressed() {
+  
+  // If R is pressed, reset canvas
+  if (keyCode === 82) {
+    background(0)
+  }
+  
+  // If T is pressed, activate trail mode
+  if (keyCode === 84) {
+    wavyEllipse.locked = !wavyEllipse.locked
+  }
 }
