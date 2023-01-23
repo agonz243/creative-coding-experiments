@@ -55,6 +55,11 @@ let wavyEllipse = new Wavellipse(50, 100)
 
 // Draw stuff continuously
 function draw() {
+  // Preview current color
+  fill(wavyEllipse.r, wavyEllipse.g, wavyEllipse.b)
+  square(5, 5, 50, 20);
+
+  fill(255, 255, 255)
   stroke(wavyEllipse.r, wavyEllipse.g, wavyEllipse.b)
   wavyEllipse.draw()
   
@@ -69,6 +74,19 @@ function draw() {
   if (keyIsDown(38)) {
     wavyEllipse.h += 1
     wavyEllipse.w += 0.5
+  }
+
+  // If 1 is pressed, increase Red
+  if (keyIsDown(49)) {
+    wavyEllipse.r += 1
+  }
+  // If 2 is pressed, increase Green
+  if (keyIsDown(50)) {
+    wavyEllipse.g += 1
+  }
+  // If 3 is pressed, increase Blue
+  if (keyIsDown(51)) {
+    wavyEllipse.b += 1
   }
   
   
