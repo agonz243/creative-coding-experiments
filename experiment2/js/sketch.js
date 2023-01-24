@@ -1,67 +1,140 @@
-// sketch.js - purpose and description here
-// Author: Your Name
-// Date:
+// Define Ellipse class
+class Wavellipse {
 
-// Here is how you might set up an OOP p5.js project
-// Note that p5.js looks for a file called sketch.js
+  constructor(w, h) {
+    this.h = h
+    this.w = w
+    
+    this.h_start = h
+    this.w_start = w
 
-// Constants - User-servicable parts
-// In a longer project I like to put these in a separate file
-const VALUE1 = 1;
-const VALUE2 = 2;
+    this.locked = true
 
-// Globals
-let myInstance;
-let canvasContainer;
+    this.r = 0
+    this.g = 0
+    this.b = 0
 
-class MyClass {
-    constructor(param1, param2) {
-        this.property1 = param1;
-        this.property2 = param2;
+    this.preset = 0
+  }
+  
+  draw() {
+    if (this.locked) {
+      ellipse(height / 2, width / 2, this.w, this.h)
+    } else {
+      ellipse(mouseX, mouseY, this.w, this.h)
     }
-
-    myMethod() {
-        // code to run when method is called
+    
+  } 
+  
+  // The ellipse remembers the shape of its soul
+  homeostasis() {
+    
+    // Revert to original shape over time
+    if (wavyEllipse.h < wavyEllipse.h_start) {
+      wavyEllipse.h += 2
+    } 
+    
+    if (wavyEllipse.w > wavyEllipse.w_start) {
+      wavyEllipse.w -= 2
     }
+    
+    if (wavyEllipse.h > wavyEllipse.h_start) {
+      wavyEllipse.h -= 2
+    }
+  }
+
+  // Cycles through three presets of the echo effect
+  cyclePreset() {
+    if (this.preset == 0) {
+      this.r = 0
+      this.g = 0
+      this.b = 0
+      this.preset++
+    } else if (this.preset == 1) {
+      this.r = 20
+      this.g = 20
+      this.b = 20  
+      this.preset++ 
+    } else {
+      this.r = 50
+      this.g = 50
+      this.b = 50
+      this.preset = 0
+    }
+  }
+
 }
 
-// setup() function is called once when the program starts
+// Instantiate ellipse object
+let wavyEllipse = new Wavellipse(50, 100)
+
+// Setup
 function setup() {
-    // place our canvas, making it fit our container
-    canvasContainer = $("#canvas-container");
-    let canvas = createCanvas(canvasContainer.width(), canvasContainer.height());
-    canvas.parent("canvas-container");
-    // resize canvas is the page is resized
-    $(window).resize(function() {
-        console.log("Resizing...");
-        resizeCanvas(canvasContainer.width(), canvasContainer.height());
-    });
-    // create an instance of the class
-    myInstance = new MyClass(VALUE1, VALUE2);
-
-    var centerHorz = windowWidth / 2;
-    var centerVert = windowHeight / 2;
+  let myCanvas = createCanvas(800,800);
+  myCanvas.parent("canvas-container");
+  background(0);
+  wavyEllipse.cyclePreset();
 }
 
-// draw() function is called repeatedly, it's the main animation loop
+
+// Draw stuff continuously
 function draw() {
-    background(220);    
-    // call a method on the instance
-    myInstance.myMethod();
+  // Preview current color
+  fill(wavyEllipse.r, wavyEllipse.g, wavyEllipse.b)
+  square(5, 5, 50, 20);
 
-    // Put drawings here
-    var centerHorz = canvasContainer.width() / 2 - 125;
-    var centerVert = canvasContainer.height() / 2 - 125;
-    fill(234, 31, 81);
-    noStroke();
-    rect(centerHorz, centerVert, 250, 250);
-    fill(255);
-    textStyle(BOLD);
-    textSize(140);
-    text("p5*", centerHorz + 10, centerVert + 200);
+  fill(255, 255, 255)
+  stroke(wavyEllipse.r, wavyEllipse.g, wavyEllipse.b)
+  wavyEllipse.draw()
+  
+  // If down is pressed, squash and stretch
+  if (keyIsDown(40)) {
+    wavyEllipse.h -= 1
+    wavyEllipse.w += 1
+    
+  }
+  
+  // If Up is pressed, stretch vertically
+  if (keyIsDown(38)) {
+    wavyEllipse.h += 1
+    wavyEllipse.w += 0.5
+  }
+
+  // If 1 is pressed, increase Red
+  if (keyIsDown(49)) {
+    wavyEllipse.r += 1
+  }
+  // If 2 is pressed, increase Green
+  if (keyIsDown(50)) {
+    wavyEllipse.g += 1
+  }
+  // If 3 is pressed, increase Blue
+  if (keyIsDown(51)) {
+    wavyEllipse.b += 1
+  }
+  
+  
+  if (!keyIsPressed) {
+    wavyEllipse.homeostasis()
+  }
 }
 
-// mousePressed() function is called once after every time a mouse button is pressed
-function mousePressed() {
-    // code to run when mouse is pressed
+
+// Check for single key presses
+function keyPressed() {
+  
+  // If R is pressed, reset canvas
+  if (keyCode === 82) {
+    background(0)
+  }
+  
+  // If T is pressed, activate trail mode
+  if (keyCode === 84) {
+    wavyEllipse.locked = !wavyEllipse.locked
+  }
+
+  // If E is pressed, cycle echo weight preset
+  if (keyCode === 69) {
+    wavyEllipse.cyclePreset()
+  }
 }
