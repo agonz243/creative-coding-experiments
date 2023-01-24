@@ -16,9 +16,11 @@ class Wavellipse {
 
     this.locked = true
 
-    this.r = 50
-    this.g = 50
-    this.b = 50
+    this.r = 0
+    this.g = 0
+    this.b = 0
+
+    this.preset = 0
   }
   
   draw() {
@@ -44,6 +46,26 @@ class Wavellipse {
     
     if (wavyEllipse.h > wavyEllipse.h_start) {
       wavyEllipse.h -= 2
+    }
+  }
+
+  // Cycles through three presets of the echo effect
+  cyclePreset() {
+    if (this.preset == 0) {
+      this.r = 0
+      this.g = 0
+      this.b = 0
+      this.preset++
+    } else if (this.preset == 1) {
+      this.r = 20
+      this.g = 20
+      this.b = 20  
+      this.preset++ 
+    } else {
+      this.r = 50
+      this.g = 50
+      this.b = 50
+      this.preset = 0
     }
   }
 
@@ -107,5 +129,10 @@ function keyPressed() {
   // If T is pressed, activate trail mode
   if (keyCode === 84) {
     wavyEllipse.locked = !wavyEllipse.locked
+  }
+
+  // If E is pressed, cycle echo weight preset
+  if (keyCode === 69) {
+    wavyEllipse.cyclePreset()
   }
 }
