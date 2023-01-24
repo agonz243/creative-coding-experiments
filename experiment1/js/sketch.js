@@ -70,7 +70,8 @@ let wavyEllipse = new Wavellipse(50, 100)
 
 // Setup
 function setup() {
-  createCanvas(800,800);
+  let myCanvas = createCanvas(800,800);
+  myCanvas.parent("canvas-container");
   background(0);
   wavyEllipse.cyclePreset();
 }
