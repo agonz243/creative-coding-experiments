@@ -1,9 +1,3 @@
-// Setup
-function setup() {
-  createCanvas(800,800);
-  background(0);
-}
-
 // Define Ellipse class
 class Wavellipse {
 
@@ -73,6 +67,13 @@ class Wavellipse {
 
 // Instantiate ellipse object
 let wavyEllipse = new Wavellipse(50, 100)
+
+// Setup
+function setup() {
+  createCanvas(800,800);
+  background(0);
+  wavyEllipse.cyclePreset();
+}
 
 
 // Draw stuff continuously
