@@ -1,6 +1,7 @@
 // Some global variables
 let angle;
 let radius;
+let radiusLerpVal;
 let circleX;
 let circleY;
 let noiseX;
@@ -12,6 +13,7 @@ function setup() {
 	let myCanvas = createCanvas(600, 600);
 	angle = 0;
 	radius = 100;
+	radiusLerpVal = radius;
 	noiseX = 0;
 	noiseY = 0;
 	orbitSpeed = 0.05;
@@ -39,7 +41,21 @@ function draw() {
 		}
 	}
 
-	orbitSpeed = lerp(orbitSpeed, random(0.0, 1), 0.01)
+	// Every 70 frames, interpolate to a new orbit speed
+	if (frameCount % 70 == 0) {
+		orbitSpeed = lerp(orbitSpeed, random(0, 1), 0.05);
+	}
+
+	// Every 100 frames, choose a new radius to slowly interpolate to
+	if (frameCount % 100 == 0) {
+		radiusLerpVal = random(50, 200);
+	}
+	
+	if (radius < radiusLerpVal) {
+		radius += 0.5;
+	} else if (radius > radiusLerpVal) {
+		radius -= 0.5;
+	}
 
 	// Constantly increment angle for rotation effect
 	angle += orbitSpeed;
