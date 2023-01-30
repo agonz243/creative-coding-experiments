@@ -1,11 +1,12 @@
 // Some global variables
 let angle;
-let speed;
 let radius;
 let circleX;
 let circleY;
 let noiseX;
 let noiseY;
+let orbitSpeed;
+let tiltSpeed;
 
 function setup() {
 	let myCanvas = createCanvas(600, 600);
@@ -13,7 +14,8 @@ function setup() {
 	radius = 100;
 	noiseX = 0;
 	noiseY = 0;
-	speed = 0.05;
+	orbitSpeed = 0.05;
+	tiltSpeed = 0.02;
 	myCanvas.parent("canvas-container");
 }
 
@@ -37,13 +39,15 @@ function draw() {
 		}
 	}
 
+	orbitSpeed = lerp(orbitSpeed, random(0.0, 1), 0.01)
+
 	// Constantly increment angle for rotation effect
-	angle += speed;
+	angle += orbitSpeed;
 
 	// Interpolate X and Y noise values for tilting orbit effect
 	if (mouseIsPressed) {
-		noiseX += 0.02;
-		noiseY -= 0.02;
+		noiseX += tiltSpeed;
+		noiseY -= tiltSpeed;
 	}
 }
 
