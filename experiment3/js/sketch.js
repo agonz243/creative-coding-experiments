@@ -7,6 +7,7 @@ let circleY;
 let noiseX;
 let noiseY;
 let orbitSpeed;
+let orbitLerpVal;
 let tiltSpeed;
 
 function setup() {
@@ -17,6 +18,7 @@ function setup() {
 	noiseX = 0;
 	noiseY = 0;
 	orbitSpeed = 0.05;
+	orbitLerpVal = orbitSpeed;
 	tiltSpeed = 0.02;
 	myCanvas.parent("canvas-container");
 }
@@ -41,10 +43,17 @@ function draw() {
 		}
 	}
 
-	// Every 70 frames, interpolate to a new orbit speed
-	if (frameCount % 70 == 0) {
-		orbitSpeed = lerp(orbitSpeed, random(0, 1), 0.05);
+	// Every 300 frames, interpolate to a new orbit speed
+	if (frameCount % 300 == 0) {
+		orbitLerpVal = random(0,0.05);
 	}
+
+	if (orbitSpeed < orbitLerpVal) {
+		orbitSpeed += 0.01;
+	} else if (orbitSpeed > orbitLerpVal) {
+		orbitSpeed -= 0.01;
+	}
+
 
 	// Every 100 frames, choose a new radius to slowly interpolate to
 	if (frameCount % 100 == 0) {
