@@ -21,7 +21,7 @@ let p; // Current photo in the array
 
 function preload() {
     p1 = loadImage("assets/raichu.jpg")
-    p2 = loadImage("assets/garf.png")
+    p2 = loadImage("assets/newgarf.png")
 }
 
 function setup() {
@@ -60,10 +60,20 @@ function setup() {
         mouthY: 325
     }
     photos.push(raichu);
+
+    const garf = {
+        pic: p2,
+        eyeLX: 155,
+        eyeLY: 100,
+        eyeRX: 250,
+        eyeRY: 105,
+        addMouth: false
+    }
+    photos.push(garf);
 }
 
 function draw() {
-    image(p1, 0, 0);
+    image(photos[p].pic, 0, 0, 600, 600);
 
     // Find and track eyes by the corner of the eyebrow
     positions = tracker.getCurrentPosition();
@@ -84,12 +94,15 @@ function draw() {
         }
 
         // Draw left eye
-        p1.copy(video, eye1.browX, eye1.browY, eyeW, eyeH, photos[p].eyeLX, photos[p].eyeLY, cutoutSize, cutoutSize - 20);
+        photos[p].pic.copy(video, eye1.browX, eye1.browY, eyeW, eyeH, 
+            photos[p].eyeLX, photos[p].eyeLY, cutoutSize, cutoutSize - 20);
         // Draw right eye
-        p1.copy(video, eye2.browX, eye2.browY, eyeW, eyeH, photos[p].eyeRX, photos[p].eyeRY, cutoutSize, cutoutSize - 20);
+        photos[p].pic.copy(video, eye2.browX, eye2.browY, eyeW, eyeH, 
+            photos[p].eyeRX, photos[p].eyeRY, cutoutSize, cutoutSize - 20);
         //Draw mouth
         if (photos[p].addMouth) {
-            p1.copy(video, mouth.cornerX - 5, mouth.cornerY, mouthW, mouthH, photos[p].mouthX, photos[p].mouthY, cutoutSize, cutoutSize - 20);
+            p1.copy(video, mouth.cornerX - 5, mouth.cornerY, mouthW, mouthH, 
+                photos[p].mouthX, photos[p].mouthY, cutoutSize, cutoutSize - 20);
         }
         
     }
@@ -98,4 +111,9 @@ function draw() {
 function mousePressed() {
     console.log("X: " + mouseX);
     console.log("Y: " + mouseY);
+    if (p < photos.length - 1) {
+        p += 1;
+    } else {
+        p = 0;
+    }
 }
