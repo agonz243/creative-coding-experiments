@@ -1,67 +1,101 @@
-// sketch.js - purpose and description here
-// Author: Your Name
-// Date:
+/*
+*   Author: Aaron Gonzales
+*   Last Edited: 02/06/2023
+*
+*   Description: An image, sound and video based experiment in p5js created for 
+*   UCSC's CMPM 169 - Creative Coding.
+*/
 
-// Here is how you might set up an OOP p5.js project
-// Note that p5.js looks for a file called sketch.js
+let myCanvas;
+let video;
+let p1
+let cutoutSize;
+let eyeW;
+let eyeH;
+let mouthW;
+let mouthH;
+let tracker = null;
+let positions = null;
+let photos = null;
+let p; // Current photo in the array
 
-// Constants - User-servicable parts
-// In a longer project I like to put these in a separate file
-const VALUE1 = 1;
-const VALUE2 = 2;
-
-// Globals
-let myInstance;
-let canvasContainer;
-
-class MyClass {
-    constructor(param1, param2) {
-        this.property1 = param1;
-        this.property2 = param2;
-    }
-
-    myMethod() {
-        // code to run when method is called
-    }
+function preload() {
+    p1 = loadImage("assets/raichu.jpg")
+    p2 = loadImage("assets/garf.png")
 }
 
-// setup() function is called once when the program starts
 function setup() {
-    // place our canvas, making it fit our container
-    canvasContainer = $("#canvas-container");
-    let canvas = createCanvas(canvasContainer.width(), canvasContainer.height());
-    canvas.parent("canvas-container");
-    // resize canvas is the page is resized
-    $(window).resize(function() {
-        console.log("Resizing...");
-        resizeCanvas(canvasContainer.width(), canvasContainer.height());
-    });
-    // create an instance of the class
-    myInstance = new MyClass(VALUE1, VALUE2);
+    createCanvas(600, 600);
+    p = 0;
 
-    var centerHorz = windowWidth / 2;
-    var centerVert = windowHeight / 2;
+    // Capture video from the webcam
+    video = createCapture(VIDEO);
+    video.size(600, 600);
+    video.hide();
+
+    // Set sizes for eyes and mouth
+    cutoutSize = 60;
+    eyeW = 50;
+    eyeH = 30;
+
+    mouthW = 60;
+    mouthH = 30;
+
+    // Initialize Eye Tracker using clmtrackr
+    // https://www.auduno.com/clmtrackr/docs/reference.html
+    tracker = new clm.tracker();
+    tracker.init();
+    tracker.start(video.elt);
+
+    // Set up array of photo options
+    photos = [];
+    const raichu = {
+        pic: p1,
+        eyeLX: 320,
+        eyeLY: 241,
+        eyeRX: 443,
+        eyeRY: 241,
+        addMouth: true,
+        mouthX: 390,
+        mouthY: 325
+    }
+    photos.push(raichu);
 }
 
-// draw() function is called repeatedly, it's the main animation loop
 function draw() {
-    background(220);    
-    // call a method on the instance
-    myInstance.myMethod();
+    image(p1, 0, 0);
 
-    // Put drawings here
-    var centerHorz = canvasContainer.width() / 2 - 125;
-    var centerVert = canvasContainer.height() / 2 - 125;
-    fill(234, 31, 81);
-    noStroke();
-    rect(centerHorz, centerVert, 250, 250);
-    fill(255);
-    textStyle(BOLD);
-    textSize(140);
-    text("p5*", centerHorz + 10, centerVert + 200);
+    // Find and track eyes by the corner of the eyebrow
+    positions = tracker.getCurrentPosition();
+    if (positions.length > 0) {   
+        const eye1 = {
+            browX: positions[19][0],
+            browY: positions[19][1]
+        };
+
+        const eye2 = {
+            browX: positions[18][0],
+            browY: positions[18][1]
+        };
+
+        const mouth = {
+            cornerX: positions[45][0],
+            cornerY: positions[45][1]
+        }
+
+        // Draw left eye
+        p1.copy(video, eye1.browX, eye1.browY, eyeW, eyeH, photos[p].eyeLX, photos[p].eyeLY, cutoutSize, cutoutSize - 20);
+        // Draw right eye
+        p1.copy(video, eye2.browX, eye2.browY, eyeW, eyeH, photos[p].eyeRX, photos[p].eyeRY, cutoutSize, cutoutSize - 20);
+        //Draw mouth
+        if (photos[p].addMouth) {
+            p1.copy(video, mouth.cornerX - 5, mouth.cornerY, mouthW, mouthH, photos[p].mouthX, photos[p].mouthY, cutoutSize, cutoutSize - 20);
+        }
+        
+    }
 }
 
-// mousePressed() function is called once after every time a mouse button is pressed
 function mousePressed() {
-    // code to run when mouse is pressed
+    console.log("X: " + mouseX);
+    console.log("Y: " + mouseY);
 }
