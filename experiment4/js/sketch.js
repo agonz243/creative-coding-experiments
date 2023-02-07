@@ -22,10 +22,12 @@ let p; // Current photo in the array
 function preload() {
     p1 = loadImage("assets/raichu.jpg")
     p2 = loadImage("assets/newgarf.png")
+    p3 = loadImage("assets/lincoln.jpg")
 }
 
 function setup() {
-    createCanvas(600, 600);
+    let myCanvas = createCanvas(600, 600);
+    myCanvas.parent("canvas-container");
     p = 0;
 
     // Capture video from the webcam
@@ -49,6 +51,15 @@ function setup() {
 
     // Set up array of photo options
     photos = [];
+    const lincoln = {
+        pic: p3,
+        eyeLX: 140,
+        eyeLY: 190,
+        eyeRX: 225,
+        eyeRY: 190,
+    }
+    photos.push(lincoln);
+
     const raichu = {
         pic: p1,
         eyeLX: 320,
@@ -70,12 +81,14 @@ function setup() {
         addMouth: false
     }
     photos.push(garf);
+
+
 }
 
 function draw() {
     image(photos[p].pic, 0, 0, 600, 600);
 
-    // Find and track eyes by the corner of the eyebrow
+    // Find and track eyes and mouth
     positions = tracker.getCurrentPosition();
     if (positions.length > 0) {   
         const eye1 = {
@@ -101,7 +114,7 @@ function draw() {
             photos[p].eyeRX, photos[p].eyeRY, cutoutSize, cutoutSize - 20);
         //Draw mouth
         if (photos[p].addMouth) {
-            p1.copy(video, mouth.cornerX - 5, mouth.cornerY, mouthW, mouthH, 
+            photos[p].pic.copy(video, mouth.cornerX - 5, mouth.cornerY, mouthW, mouthH, 
                 photos[p].mouthX, photos[p].mouthY, cutoutSize, cutoutSize - 20);
         }
         
@@ -109,8 +122,6 @@ function draw() {
 }
 
 function mousePressed() {
-    console.log("X: " + mouseX);
-    console.log("Y: " + mouseY);
     if (p < photos.length - 1) {
         p += 1;
     } else {
