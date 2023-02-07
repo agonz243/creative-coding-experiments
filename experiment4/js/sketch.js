@@ -23,6 +23,7 @@ function preload() {
     p1 = loadImage("assets/raichu.jpg")
     p2 = loadImage("assets/newgarf.png")
     p3 = loadImage("assets/lincoln.jpg")
+    p4 = loadImage("assets/danny.jpeg")
 }
 
 function setup() {
@@ -36,7 +37,7 @@ function setup() {
     video.hide();
 
     // Set sizes for eyes and mouth
-    cutoutSize = 60;
+    cutoutSize = 65;
     eyeW = 50;
     eyeH = 30;
 
@@ -67,8 +68,8 @@ function setup() {
         eyeRX: 443,
         eyeRY: 241,
         addMouth: true,
-        mouthX: 390,
-        mouthY: 325
+        mouthX: 380,
+        mouthY: 320
     }
     photos.push(raichu);
 
@@ -81,6 +82,18 @@ function setup() {
         addMouth: false
     }
     photos.push(garf);
+
+    const danny = {
+        pic: p4,
+        eyeLX: 550,
+        eyeLY: 150,
+        eyeRX: 650,
+        eyeRY: 150,
+        addMouth: true,
+        mouthX: 590,
+        mouthY: 250
+    }
+    photos.push(danny);
 
 
 }
@@ -115,7 +128,7 @@ function draw() {
         //Draw mouth
         if (photos[p].addMouth) {
             photos[p].pic.copy(video, mouth.cornerX - 5, mouth.cornerY, mouthW, mouthH, 
-                photos[p].mouthX, photos[p].mouthY, cutoutSize, cutoutSize - 20);
+                photos[p].mouthX, photos[p].mouthY, cutoutSize + 30, cutoutSize - 20);
         }
         
     }
