@@ -2,66 +2,52 @@
 // Author: Your Name
 // Date:
 
-// Here is how you might set up an OOP p5.js project
-// Note that p5.js looks for a file called sketch.js
+let video
+let eyeL
+let eyeR
+let tracker = null
+let positions = null
 
-// Constants - User-servicable parts
-// In a longer project I like to put these in a separate file
-const VALUE1 = 1;
-const VALUE2 = 2;
-
-// Globals
-let myInstance;
-let canvasContainer;
-
-class MyClass {
-    constructor(param1, param2) {
-        this.property1 = param1;
-        this.property2 = param2;
-    }
-
-    myMethod() {
-        // code to run when method is called
-    }
+function preload() {
+  eyeL = loadModel('assets/3DEye.obj');
+  eyeR = loadModel('assets/3DEye.obj');
 }
+
 
 // setup() function is called once when the program starts
 function setup() {
-    // place our canvas, making it fit our container
-    canvasContainer = $("#canvas-container");
-    let canvas = createCanvas(canvasContainer.width(), canvasContainer.height());
-    canvas.parent("canvas-container");
-    // resize canvas is the page is resized
-    $(window).resize(function() {
-        console.log("Resizing...");
-        resizeCanvas(canvasContainer.width(), canvasContainer.height());
-    });
-    // create an instance of the class
-    myInstance = new MyClass(VALUE1, VALUE2);
+    let myCanvas = createCanvas(800, 800, WEBGL);
+    myCanvas.parent('canvas-container');
+    // Capture video from the webcam
+    video = createCapture(VIDEO);
+    video.size(600, 600);
+    video.hide();
 
-    var centerHorz = windowWidth / 2;
-    var centerVert = windowHeight / 2;
+    // Initialize Eye Tracker using clmtrackr
+    // https://www.auduno.com/clmtrackr/docs/reference.html
+    tracker = new clm.tracker();
+    tracker.init();
+    tracker.start(video.elt);
 }
 
 // draw() function is called repeatedly, it's the main animation loop
 function draw() {
-    background(220);    
-    // call a method on the instance
-    myInstance.myMethod();
+    background(220);
+    scale(150, -150, 150);
 
-    // Put drawings here
-    var centerHorz = canvasContainer.width() / 2 - 125;
-    var centerVert = canvasContainer.height() / 2 - 125;
-    fill(234, 31, 81);
-    noStroke();
-    rect(centerHorz, centerVert, 250, 250);
-    fill(255);
-    textStyle(BOLD);
-    textSize(140);
-    text("p5*", centerHorz + 10, centerVert + 200);
-}
+    push();
+    translate(-1, 0);
+    model(eyeL); 
+    pop();
 
-// mousePressed() function is called once after every time a mouse button is pressed
-function mousePressed() {
-    // code to run when mouse is pressed
+    push();
+    translate(1, 0);
+    model(eyeR);
+    pop();   
+
+    // Find and track eyes and mouth
+    positions = tracker.getCurrentPosition();
+    if (positions.length > 0) { 
+    }
+    
 }
