@@ -33,21 +33,34 @@ function setup() {
 // draw() function is called repeatedly, it's the main animation loop
 function draw() {
     background(220);
-    scale(150, -150, 150);
 
-    push();
-    translate(-1, 0);
-    model(eyeL); 
-    pop();
-
-    push();
-    translate(1, 0);
-    model(eyeR);
-    pop();   
-
-    // Find and track eyes and mouth
+    // Find and track center of each eye
     positions = tracker.getCurrentPosition();
     if (positions.length > 0) { 
-    }
+        const eye1 = {
+            centerX: positions[27][0],
+            centerY: positions[27][1]
+        };
+
+        const eye2 = {
+            centerX: positions[32][0],
+            centerY: positions[32][1]
+        };
     
+
+        // Scale the eyeballs so they are visible
+        scale(-1.0, 1.0);
+        scale(50.0);
+        translate(-12, -18);
+
+        push();
+        translate(eye1.centerX * 0.05, eye1.centerY * 0.05);
+        model(eyeL); 
+        pop();
+
+        push();
+        translate((eye2.centerX * 0.05) - 7 , eye2.centerY * 0.05);
+        model(eyeR);
+        pop();   
+    }
 }
