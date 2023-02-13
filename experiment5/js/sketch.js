@@ -5,12 +5,14 @@
 let video
 let eyeL
 let eyeR
+let lips
 let tracker = null
 let positions = null
 
 function preload() {
   eyeL = loadModel('assets/3DEye.obj');
   eyeR = loadModel('assets/3DEye.obj');
+  lips = loadModel('assets/lips2.0.obj');
 }
 
 
@@ -32,7 +34,10 @@ function setup() {
 
 // draw() function is called repeatedly, it's the main animation loop
 function draw() {
-    background(220);
+    background(230, 112, 132);
+    noStroke();
+    pointLight(60, 60, 60, 30, 0,  400);
+    specularMaterial(255);
 
     // Find and track center of each eye
     positions = tracker.getCurrentPosition();
@@ -46,21 +51,44 @@ function draw() {
             centerX: positions[32][0],
             centerY: positions[32][1]
         };
+
+        const mouth = {
+            centerX: positions[57][0],
+            centerY: positions[57][1]
+        };
     
 
-        // Scale the eyeballs so they are visible
+        // Draw eyes and mouth
         scale(-1.0, 1.0);
         scale(50.0);
         translate(-12, -18);
 
+        // Eye 1
         push();
         translate(eye1.centerX * 0.05, eye1.centerY * 0.05);
-        model(eyeL); 
+        model(eyeL);
+        // Draw pupil
+        fill(0, 0, 0);
+        translate(-0.5, 0, 2);
+        sphere(0.3);
         pop();
 
+        // Eye 2
         push();
         translate((eye2.centerX * 0.05) - 7 , eye2.centerY * 0.05);
         model(eyeR);
-        pop();   
+        // Draw pupil
+        fill(0, 0, 0);
+        translate(-0.05, 0, 2);
+        sphere(0.3);
+        pop();
+
+        // Mouth
+        push();
+        specularMaterial(255, 10, 64);
+        translate(-19, -20, -20); // Positional tweaking
+        translate(mouth.centerX * 0.1, mouth.centerY * 0.1);
+        model(lips); 
+        pop();
     }
 }
