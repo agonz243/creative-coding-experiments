@@ -1,6 +1,6 @@
-// sketch.js - purpose and description here
-// Author: Your Name
-// Date:
+// sketch.js - A coding experiment using face tracking and 3d objects in p5js
+// Author: Aaron Gonzales
+// Date: 02/14/23
 
 let video
 let eyeL
