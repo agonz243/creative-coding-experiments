@@ -7,7 +7,7 @@ let generatedText;
 let grammar = 
 {
     "origin": ["There once was a person named #name#. Every day, without fail, they felt #mood#."],
-    "name": ["Aaron", "Amy"],
+    "name": ["Aaron", "Amy", "Misha"],
     "mood": ["Zesty", "Furious", "Happy", "Hangry"]
 }
 
@@ -21,10 +21,15 @@ function setup() {
 }
 
 function draw() {
+    clear();
     text(generatedText, width / 2, height / 2);
 }
 
 function loadGrammar() {
     var grammarObj = tracery.createGrammar(grammar);
     return grammarObj.flatten('#origin#');
+}
+
+function mouseClicked() {
+    generatedText = loadGrammar();
 }
