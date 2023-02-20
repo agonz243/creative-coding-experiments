@@ -33,13 +33,6 @@ function setup() {
     textFont(font);
     textSize(100);
     fill(255,255,255);
-    //translate(0, 0, 50);
-
-    // Resize canvas if the page is resized
-    $(window).resize(function() {
-        console.log("Resizing...");
-        resizeCanvas(canvas.width, canvas.height);
-    });
 
     // Generate strings and add them to an array as Type objects
     for (let i = 0; i < 10; i++) {
@@ -54,8 +47,7 @@ function setup() {
 function draw() {
     background(0, 0, 0);
 
-    // For evert string in the array, display it on screen with animation
-	//orbitControl();
+    // For every string in the array, display it on screen with animation
     for (let i = 0; i < str_arr.length; i++) {
         str_arr[i].update();
         str_arr[i].display();
