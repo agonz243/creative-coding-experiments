@@ -6,14 +6,24 @@ let generatedText;
 
 let grammar = 
 {
-    "origin": ["There once was a person named #name#. Every day, without fail, they felt #mood#."],
-    "name": ["Aaron", "Amy", "Misha"],
-    "mood": ["Zesty", "Furious", "Happy", "Hangry"]
+    "origin": ["#negativity#"],
+    "negativity": ["When will you #issue#?", "I need to #issue# before it's too late.", "I'll never #issue#",
+                    "#people.capitalize# must think I'm #trait#", "I'm so #trait#"],
+    "issue": ["get a job", "get married", "have kids", "move out", "make friends"],
+    "people": ["everyone", "my friends", "my family"],
+    "trait": ["stupid", "weird", "boring", "annoying"]
 }
 
 function setup() {
     let canvas = createCanvas(800, 800);
     canvas.parent("canvas-container");
+
+    // Resize canvas if the page is resized
+    $(window).resize(function() {
+        console.log("Resizing...");
+        resizeCanvas(canvas.width, canvas.height);
+    });
+
     textSize(20);
     textAlign(CENTER, CENTER);
     generatedText = loadGrammar();
@@ -31,5 +41,6 @@ function loadGrammar() {
 }
 
 function mouseClicked() {
+    console.log("Generated Text")
     generatedText = loadGrammar();
 }
