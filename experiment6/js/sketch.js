@@ -16,6 +16,7 @@ let grammar =
 
 function setup() {
     let canvas = createCanvas(800, 800);
+    background(0, 0, 0);
     canvas.parent("canvas-container");
 
     // Resize canvas if the page is resized
@@ -25,13 +26,14 @@ function setup() {
     });
 
     textSize(20);
+    fill(255);
     textAlign(CENTER, CENTER);
     generatedText = loadGrammar();
 
 }
 
 function draw() {
-    clear();
+    background(0, 0, 0);
     text(generatedText, width / 2, height / 2);
 }
 
