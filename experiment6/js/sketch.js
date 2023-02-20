@@ -26,7 +26,7 @@ function preload() {
 }
 
 function setup() {
-    let canvas = createCanvas(1500, 800, WEBGL);
+    let canvas = createCanvas(windowWidth - 50, 800, WEBGL);
     canvas.parent("canvas-container");
 
     textAlign(CENTER, CENTER);
