@@ -27,12 +27,15 @@ function setup() {
   t = 0; // Current text index to access in text array
   textArr = ["Hello there, how are you?", "I'd Like to show you something", 
   "Indulge me, if you will. As I give you a glimpse...", "...of life as a Black or Hispanic American",
-  "Since, 2015 The Washington Post has tracked " + shootings + " fatal police shootings"]
-  currText = new FadeText(textArr[t], midX, midY, 10)
+  "Since, 2015 The Washington Post has tracked " + shootings + " fatal police shootings",
+  "45%"]
+  currText = new FadeText(textArr[t], midX, midY, 32)
 }
 
 function draw() {
   background(0);
+
+  // Display text and fade in/out as necessary
   currText.display();
   if (!currText.faded) {
     currText.fadeIn();
@@ -40,6 +43,7 @@ function draw() {
     currText.fadeOut();
   }
 
+  // When one sentence is faded out, fade in the next
   if (currText.opacity <= 0 && t < textArr.length - 1) {
     t += 1;
     console.log(textArr[t]);
@@ -47,11 +51,17 @@ function draw() {
     currText.faded = !currText.faded;
   }
 
+  // Handle the rising count for the 5th panel
   if (t == 4 && shootings < 8229) {
     constrain(shootings, 0, 8229);
     shootings += 10;
     textArr[t] = "Since, 2015 The Washington Post has tracked " + shootings + " fatal police shootings in the US"
     currText.str = textArr[t];
+  }
+
+  if (t == 5 && currText.s < 200) {
+    currText.s += 0.5;
+    console.log(currText.s)
   }
 }
 
@@ -71,9 +81,9 @@ class FadeText {
 
   display() {
     push();
-    textSize(32);
+    textSize(this.s);
     fill(255, 255, 255, this.opacity);
-    text(this.str, this.x, this.y, 700, 100);
+    text(this.str, this.x, this.y, 700, 300);
     pop();
   }
 
