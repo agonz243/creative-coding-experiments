@@ -8,7 +8,9 @@ let midX;
 let midY;
 let textArr;
 let t;
+let canClick = true;
 let shootings;
+let t5Text;
 
 function setup() {
   let canvas = createCanvas(800, 600);
@@ -28,7 +30,7 @@ function setup() {
   textArr = ["Hello there, how are you?", "I'd Like to show you something", 
   "Indulge me, if you will. As I give you a glimpse...", "...of life as a Black or Hispanic American",
   "Since, 2015 The Washington Post has tracked " + shootings + " fatal police shootings",
-  "45%"]
+  "45%", "Bruh"]
   currText = new FadeText(textArr[t], midX, midY, 32)
 }
 
@@ -60,13 +62,31 @@ function draw() {
   }
 
   if (t == 5 && currText.s < 200) {
+    canClick = false;
     currText.s += 0.5;
-    console.log(currText.s)
+  } else if (t == 5 && currText.s >= 200 && currText.y > midY - 30) {
+    currText.y -= 0.5;
+    t5Text = new FadeText("Of victims were black or hispanic", midX, midY + 10, 25)
+    t5Text.opacity = 0;
+    t5Text.y = midY + 60;
+  } else if (t == 5 && currText.s >= 200 && currText.y <= midY - 30) {
+    t5Text.display()
+    t5Text.fadeIn();
+    canClick = true;
+  }
+
+  if (t == 6) {
+    t5Text.display();
+    t5Text.fadeOut();
+    currText.s = 32;
+    currText.y = midY;
   }
 }
 
 function mouseClicked() {
-  currText.faded = true;
+  if (canClick) {
+    currText.faded = true;
+  }
 }
 
 class FadeText {
