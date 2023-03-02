@@ -1,7 +1,7 @@
-// sketch.js -
-//
+// sketch.js - An interactive showcase of disproportionate
+//             police shootings in the U.S.
 // Author: Aaron Gonzales
-// Last Edited: 02/27/2023
+// Last Edited: 03/01/2023
 
 let testText;
 let midX;
