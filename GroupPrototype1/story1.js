@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 		story:{
 			"origin": ["#introduction# #plot# #resolution# #moral#"],
-			"introduction": ["Once upon a time, in a far-off land, there lived a #character.a#."],
+			"introduction": ["Once upon a time, in a far-off land, there lived a #character#."],
 			"plot": ["#character# went on a #journey# to find #goal#."],
 			"resolution": ["#character.capitalize# finally found #goal# and returned home safe and sound."],
 			"moral": ["The lesson of this story is #lesson#."],
